@@ -415,7 +415,7 @@ bool convert_magonia(const char* pSrc_filename, const char* pDst_filename, const
         else
             fprintf(pOut_file, "  \"source_id\" : \"Magonia_%u\",\n", rec_index);
 
-        fprintf(pOut_file, u8"  \"source\" : \"%s\",\n", pSource_override ? pSource_override : u8"ValléeMagonia");
+        fprintf(pOut_file, u8"  \"source\" : \"%s\",\n", pSource_override ? pSource_override : u8"VallMagonia");
 
         if (pType_override)
             fprintf(pOut_file, "  \"type\" : \"%s\"\n", pType_override);
@@ -1174,7 +1174,7 @@ bool convert_eberhart(unordered_string_set& unique_urls)
             continue;
         }
 
-        size_t dash_pos = line.find(u8"—");
+        size_t dash_pos = line.find(u8"?");
         if (dash_pos == std::string::npos)
             panic("Failed finding dash\n");
 
@@ -1206,7 +1206,7 @@ bool convert_eberhart(unordered_string_set& unique_urls)
             if (temp[0] == '#')
                 break;
 
-            size_t d = temp.find(u8"—");
+            size_t d = temp.find(u8"?");
 
             const uint32_t DASH_THRESH_POS = 42;
             if ((d != std::string::npos) && (d < DASH_THRESH_POS))
@@ -1497,7 +1497,7 @@ bool convert_johnson()
                         (string_find_first(l, "Written by Donald Johnson") != -1) ||
                         (string_find_first(l, "Written by Donald A Johnson") != -1) ||
                         (string_find_first(l, "Compiled from the UFOCAT computer database") != -1) ||
-                        (string_find_first(l, u8"© Donald A. Johnson") != -1) ||
+                        (string_find_first(l, u8"?Donald A. Johnson") != -1) ||
                         (string_begins_with(l, "Themes: ")))
                     {
                         found_end = true;
@@ -1993,8 +1993,8 @@ static void converters_test()
     uprintf("%s\n", wchar_to_utf8(utf8_to_wchar(blah, CP_ACP)).c_str());
 #endif
 
-    //fprintf(u8"“frightening vision”");
-    //ufprintf(stderr, u8"“frightening vision”");
+    //fprintf(u8"“frightening vision?);
+    //ufprintf(stderr, u8"“frightening vision?);
     assert(crc32((const uint8_t*)"TEST", 4) == 0xeeea93b8);
     assert(crc32((const uint8_t*)"408tdsfjdsfjsdh893!;", 20) == 0xa044e016);
     if (!test_eberhart_date()) return panic("test_eberhart_date failed!");
@@ -2007,11 +2007,11 @@ static void converters_test()
 
     //bufprintf(pIn, "A\nB  \nC\n_This is a blah_[XXXX](YYYY(S))");
 
-    //const char* p = u8R"(Chemist [Gustaf Ljunggren](https://www.google.com/url?q=https://en.wikipedia.org/wiki/Gustaf_Ljunggren_(chemist)&sa=D&source=editors&ust=1674889728009134&usg=AOvVaw2v_Cymx15I5Ic1eNEYeeBr) of the Swedish National Defense Research Institute summarizes for the Swedish Defense staff his analysis of 27 finds of mysterious substances, allegedly from ghost rockets. None are radioactive and all have mundane explanations. (Anders Liljegren and Clas Svahn, “The Ghost Rockets,” UFOs 1947–1987, Fortean Tomes, 1987, pp. 33–34))";
+    //const char* p = u8R"(Chemist [Gustaf Ljunggren](https://www.google.com/url?q=https://en.wikipedia.org/wiki/Gustaf_Ljunggren_(chemist)&sa=D&source=editors&ust=1674889728009134&usg=AOvVaw2v_Cymx15I5Ic1eNEYeeBr) of the Swedish National Defense Research Institute summarizes for the Swedish Defense staff his analysis of 27 finds of mysterious substances, allegedly from ghost rockets. None are radioactive and all have mundane explanations. (Anders Liljegren and Clas Svahn, “The Ghost Rockets,?UFOs 1947?987, Fortean Tomes, 1987, pp. 33?4))";
 //    const char* p = u8R"(Blah  
-//English clergyman and philosopher [_John Wilkins_](https://www.google.com/url?q=https://en.wikipedia.org/wiki/John_Wilkins&sa=D&source=editors&ust=1674889727243386&usg=AOvVaw1hw56rPPqRvDJzjdV0g8Zb) writes The Discovery of a World in the Moone, in which he highlights the similarities of the Earth and the Moon (seas, mountains, atmosphere) and concludes that the Moon is likely to be inhabited by living beings, whom the calls “Selenites.” (Maria Avxentevskaya, “[How 17th Century](https://www.google.com/url?q=https://www.realclearscience.com/articles/2017/12/02/how_17th_century_dreamers_planned_to_reach_the_moon_110476.html&sa=D&source=editors&ust=1674889727243765&usg=AOvVaw13_nH4qqo0LYqJqnhq4_eI) [Dreamers Planned to Reach the Moon,](https://www.google.com/url?q=https://www.realclearscience.com/articles/2017/12/02/how_17th_century_dreamers_planned_to_reach_the_moon_110476.html&sa=D&source=editors&ust=1674889727244030&usg=AOvVaw2K5FMN315Pjxq_xO7wp7Ga)” <br/><br/>Real Clear Science, December 2, 2017)  )";
+//English clergyman and philosopher [_John Wilkins_](https://www.google.com/url?q=https://en.wikipedia.org/wiki/John_Wilkins&sa=D&source=editors&ust=1674889727243386&usg=AOvVaw1hw56rPPqRvDJzjdV0g8Zb) writes The Discovery of a World in the Moone, in which he highlights the similarities of the Earth and the Moon (seas, mountains, atmosphere) and concludes that the Moon is likely to be inhabited by living beings, whom the calls “Selenites.?(Maria Avxentevskaya, “[How 17th Century](https://www.google.com/url?q=https://www.realclearscience.com/articles/2017/12/02/how_17th_century_dreamers_planned_to_reach_the_moon_110476.html&sa=D&source=editors&ust=1674889727243765&usg=AOvVaw13_nH4qqo0LYqJqnhq4_eI) [Dreamers Planned to Reach the Moon,](https://www.google.com/url?q=https://www.realclearscience.com/articles/2017/12/02/how_17th_century_dreamers_planned_to_reach_the_moon_110476.html&sa=D&source=editors&ust=1674889727244030&usg=AOvVaw2K5FMN315Pjxq_xO7wp7Ga)?<br/><br/>Real Clear Science, December 2, 2017)  )";
 
-    //const char* p = u8R"(Pierre Lagrange, “[_Agobard, la Magonie et les ovnis_,](https://www.google.com/url?q=https://pierrelagrangesociologie.files.wordpress.com/2020/08/lagrange-agobard-magonie-ufologie-lhistoire-440-2017-10-p28-29.pdf&sa=D&source=editors&ust=1674889727239396&usg=AOvVaw1U01Ykx3tRTQS4QKENJuGi)” Actualité, no. 440 (October 2017): 28–29; Wikipedia, “[Magonia (mythology)](https://www.google.com/url?q=https://en.wikipedia.org/wiki/Magonia_(mythology)&sa=D&source=editors&ust=1674889727239728&usg=AOvVaw0JOQanVKKoRClyKQPK5SJi)”))";
+    //const char* p = u8R"(Pierre Lagrange, “[_Agobard, la Magonie et les ovnis_,](https://www.google.com/url?q=https://pierrelagrangesociologie.files.wordpress.com/2020/08/lagrange-agobard-magonie-ufologie-lhistoire-440-2017-10-p28-29.pdf&sa=D&source=editors&ust=1674889727239396&usg=AOvVaw1U01Ykx3tRTQS4QKENJuGi)?Actualit? no. 440 (October 2017): 28?9; Wikipedia, “[Magonia (mythology)](https://www.google.com/url?q=https://en.wikipedia.org/wiki/Magonia_(mythology)&sa=D&source=editors&ust=1674889727239728&usg=AOvVaw0JOQanVKKoRClyKQPK5SJi)?)";
     const char* p = "<br/>blah<br/>_[Agobard,](www.blah.com)_<br/> blah<br/>blah <br/>[_Agobard_,](www.blah.com)<br/>";
 
     //const char* p = "***[sssss](www.dddd.com)*** _Blah_ *Cool*_Zeek_";
@@ -3493,7 +3493,7 @@ bool convert_nuk()
         event.m_desc = string_format("Nuclear test: %s. Country: %s", attr.c_str(), x[cColCountry].c_str());
         
         if ((x[cColName].size()) && (x[cColName] != "-"))
-            event.m_desc += string_format(u8" Name: “%s”", x[cColName].c_str());
+            event.m_desc += string_format(u8" Name: ?s?", x[cColName].c_str());
 
         if (x[cColY].size())
             event.m_desc += string_format(" Yield: %sKT", x[cColY].c_str());
@@ -3583,9 +3583,9 @@ bool convert_anon()
         if (s.size() < 27)
             panic("Invalid string");
         
-        //[0x00000026] 0xe2 'â'	char
+        //[0x00000026] 0xe2 '?	char
         //[0x00000027]	0x80 '€'	char
-        //[0x00000028]	0x94 '”'	char
+        //[0x00000028]	0x94 '?	char
 
         const int8_t c = -30;// (int8_t)0xE2;
         size_t dash_pos = s.find_first_of(c);
